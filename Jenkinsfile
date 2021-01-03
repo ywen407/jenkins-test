@@ -8,7 +8,7 @@ pipeline {
             steps {
                 echo ' Cloning master Repository'
 
-                git url: 'https://github.com/ywen407/jenkins-test'
+                git url: 'https://github.com/ywen407/jenkins-test',
                     branch:'main',
                     credentialsId: 'git-credential'
             }
