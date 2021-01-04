@@ -86,12 +86,8 @@ pipeline {
             echo 'Build Backend'
 
             dir ('./'){
-                /*sh """
-                docker build . -t server --build-arg env=${PROD}
-                """ß
-                */
                 sh """
-                npm run build
+                docker build . -t server --build-arg env=${PROD}
                 """
             }
           }
@@ -100,7 +96,7 @@ pipeline {
             success {
                   setBuildStatus("Build succeeded", "SUCCESS");
                 }
-                failure {
+            failure {
                   setBuildStatus("Build failed", "FAILURE");
                 }
 
@@ -108,9 +104,7 @@ pipeline {
               error 'This pipeline stops here...'
             }
           }
-
         }
-
 
     }
 }
