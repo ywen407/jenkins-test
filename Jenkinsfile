@@ -72,7 +72,7 @@ pipeline {
 
             dir ('./'){
                 sh """
-                docker build . -t server --build-arg env=${PROD}
+                npm run build
                 """
             }
           }
