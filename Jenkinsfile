@@ -80,14 +80,18 @@ pipeline {
           }
         }
 
-        /*stage('Bulid Backend') {
+        stage('Bulid Backend') {
           agent any
           steps {
             echo 'Build Backend'
 
             dir ('./'){
-                sh """
+                /*sh """
                 docker build . -t server --build-arg env=${PROD}
+                """ß
+                */
+                sh """
+                npm run build
                 """
             }
           }
@@ -106,7 +110,7 @@ pipeline {
           }
 
         }
-       */
+
 
     }
 }
