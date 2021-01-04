@@ -66,7 +66,11 @@ pipeline {
         }
 
         stage('Bulid Backend') {
-          agent any
+          agent {
+            docker {
+              image 'node:latest'
+            }
+          }
           steps {
             echo 'Build Backend'
 
