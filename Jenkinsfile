@@ -98,7 +98,7 @@ pipeline {
             }
           }
 
-          spost {
+          post {
               success {
                 setBuildStatus("Build succeeded", "SUCCESS");
               }
