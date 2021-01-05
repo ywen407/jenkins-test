@@ -1,18 +1,4 @@
-void setBuildStatus(String message, String state) {
-  step([
-    $class: "GitHubCommitStatusSetter",
-    reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ywen407/jenkins-test"],
-    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "signal-jenkins"],
-    errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-    // 아래 값을 Display URL for Blue Ocean 플러그인 설치 후 활성화 한다.
-    // statusBackrefSource: [$class: "ManuallyEnteredBackrefSource", backref: "${env.RUN_DISPLAY_URL}"],
-    statusResultSource: [
-      $class: "ConditionalStatusResultSource",
-      results: [
-        [$class: "AnyBuildResult", message: message, state: state]]
-      ]
-  ]);
-}
+def buildBadge = addEmbeddedableBadgeConfiguration(id:"signalbuild", subject: "Signal BUild")
 
 pipeline {
     agent any
@@ -27,6 +13,8 @@ pipeline {
                 git url: 'https://github.com/ywen407/jenkins-test',
                     branch:'main',
                     credentialsId: 'git-credential'
+                buildBadge.setStatus("running")
+                buildBadge.setColor("grey")
             }
         }
         /*
@@ -64,7 +52,8 @@ pipeline {
             post {
 
                 failure {
-                  setBuildStatus("lint failed", "FAILURE");
+                  buildBadge.setStatus('lint fail')
+                  buildBadge.setColor('red')
                 }
             }
         }
@@ -90,7 +79,8 @@ pipeline {
 
           post {
             failure {
-              setBuildStatus("test and coverage failed", "FAILURE");
+              buildBadge.setStatus('test fail')
+              buildBadge.setColor('red')
             }
           }
         }
@@ -113,10 +103,12 @@ pipeline {
 
           post {
               success {
-                setBuildStatus("build succeeded", "SUCCESS");
+                buildBadge.setStatus('build success')
+                buildBadge.setColor('green')
               }
               failure {
-                setBuildStatus("build failed", "FAILURE");
+                buildBadge.setStatus('build fail')
+                buildBadge.setColor('red')
               }
           }
         }
