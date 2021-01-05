@@ -60,6 +60,14 @@ pipeline {
                   '''
               }
             }
+            post {
+              success {
+                  setBuildStatus("lint success", "SUCCESS");
+                }
+                failure {
+                  setBuildStatus("lint failed", "FAILURE");
+                }
+            }
         }
 
         stage('Test and Coverage') {
@@ -83,10 +91,10 @@ pipeline {
 
           post {
             success {
-              setBuildStatus("Build succeeded", "SUCCESS");
+              setBuildStatus("test and coverage succeeded", "SUCCESS");
             }
             failure {
-              setBuildStatus("Build failed", "FAILURE");
+              setBuildStatus("test and coverage failed", "FAILURE");
             }
           }
         }
