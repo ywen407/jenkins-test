@@ -1,4 +1,4 @@
-def buildBadge = addEmbeddedableBadgeConfiguration(id:"signalbuild", subject: "Signal BUild")
+def buildBadge = addEmbeddableBadgeConfiguration(id:"signalbuild", subject: "Signal BUild")
 
 pipeline {
     agent any
