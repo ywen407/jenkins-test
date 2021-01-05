@@ -13,8 +13,11 @@ pipeline {
                 git url: 'https://github.com/ywen407/jenkins-test',
                     branch:'main',
                     credentialsId: 'git-credential'
-                buildBadge.setStatus("running")
-                buildBadge.setColor("grey")
+                script {
+                  buildBadge.setStatus("running")
+                  buildBadge.setColor("grey")
+                }
+
             }
         }
         /*
@@ -52,8 +55,10 @@ pipeline {
             post {
 
                 failure {
-                  buildBadge.setStatus('lint fail')
-                  buildBadge.setColor('red')
+                  script {
+                      buildBadge.setStatus('lint fail')
+                      buildBadge.setColor('red')
+                  }
                 }
             }
         }
@@ -79,8 +84,10 @@ pipeline {
 
           post {
             failure {
-              buildBadge.setStatus('test fail')
-              buildBadge.setColor('red')
+              script {
+                buildBadge.setStatus('test fail')
+                buildBadge.setColor('red')
+              }
             }
           }
         }
@@ -103,12 +110,16 @@ pipeline {
 
           post {
               success {
-                buildBadge.setStatus('build success')
-                buildBadge.setColor('green')
+                script {
+                  buildBadge.setStatus('build success')
+                  buildBadge.setColor('green')
+                }
               }
               failure {
-                buildBadge.setStatus('build fail')
-                buildBadge.setColor('red')
+                script {
+                  buildBadge.setStatus('build fail')
+                  buildBadge.setColor('red')
+                }
               }
           }
         }
