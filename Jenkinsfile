@@ -44,6 +44,7 @@ pipeline {
             }
         }
         */
+
         stage('Lint Backend') {
             // Docker plugin and Docker Pipeline 두개를 깔아야 사용가능!
             agent {
@@ -61,9 +62,7 @@ pipeline {
               }
             }
             post {
-              success {
-                  setBuildStatus("lint success", "SUCCESS");
-                }
+
                 failure {
                   setBuildStatus("lint failed", "FAILURE");
                 }
@@ -90,9 +89,6 @@ pipeline {
           }
 
           post {
-            success {
-              setBuildStatus("test and coverage succeeded", "SUCCESS");
-            }
             failure {
               setBuildStatus("test and coverage failed", "FAILURE");
             }
