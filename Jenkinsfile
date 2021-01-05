@@ -1,4 +1,18 @@
-def buildBadge = addEmbeddableBadgeConfiguration(id:"signalbuild", subject: "Signal BUild")
+void setBuildStatus(String message, String state) {
+  step([
+    $class: "GitHubCommitStatusSetter",
+    reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ywen407/jenkins-test"],
+    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+    errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+    // 아래 값을 Display URL for Blue Ocean 플러그인 설치 후 활성화 한다.
+    // statusBackrefSource: [$class: "ManuallyEnteredBackrefSource", backref: "${env.RUN_DISPLAY_URL}"],
+    statusResultSource: [
+      $class: "ConditionalStatusResultSource",
+      results: [
+        [$class: "AnyBuildResult", message: message, state: state]]
+      ]
+  ]);
+}
 
 pipeline {
     agent any
@@ -13,11 +27,6 @@ pipeline {
                 git url: 'https://github.com/ywen407/jenkins-test',
                     branch:'main',
                     credentialsId: 'git-credential'
-                script {
-                  buildBadge.setStatus("running")
-                  buildBadge.setColor("grey")
-                }
-
             }
         }
         /*
@@ -35,7 +44,6 @@ pipeline {
             }
         }
         */
-
         stage('Lint Backend') {
             // Docker plugin and Docker Pipeline 두개를 깔아야 사용가능!
             agent {
@@ -53,13 +61,9 @@ pipeline {
               }
             }
             post {
-
-                failure {
-                  script {
-                      buildBadge.setStatus('lint fail')
-                      buildBadge.setColor('red')
-                  }
-                }
+              failure {
+                setBuildStatus("test failed", "FAILURE");
+              }
             }
         }
 
@@ -84,10 +88,7 @@ pipeline {
 
           post {
             failure {
-              script {
-                buildBadge.setStatus('test fail')
-                buildBadge.setColor('red')
-              }
+              setBuildStatus("test failed", "FAILURE");
             }
           }
         }
@@ -110,16 +111,10 @@ pipeline {
 
           post {
               success {
-                script {
-                  buildBadge.setStatus('build success')
-                  buildBadge.setColor('green')
-                }
+                setBuildStatus("Build succeeded", "SUCCESS");
               }
               failure {
-                script {
-                  buildBadge.setStatus('build fail')
-                  buildBadge.setColor('red')
-                }
+                setBuildStatus("Build failed", "FAILURE");
               }
           }
         }
