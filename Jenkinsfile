@@ -2,7 +2,7 @@ void setBuildStatus(String message, String state) {
   step([
     $class: "GitHubCommitStatusSetter",
     reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ywen407/jenkins-test"],
-    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "signal-jenkins"],
     errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
     // 아래 값을 Display URL for Blue Ocean 플러그인 설치 후 활성화 한다.
     // statusBackrefSource: [$class: "ManuallyEnteredBackrefSource", backref: "${env.RUN_DISPLAY_URL}"],
@@ -105,18 +105,16 @@ pipeline {
                 npm run build
                 """
             }
-
-            post {
-              success {
-                setBuildStatus("Build succeeded", "SUCCESS");
-              }
-              failure {
-                setBuildStatus("Build failed", "FAILURE");
-              }
-            }
           }
 
-
+          post {
+              success {
+                setBuildStatus("test succeeded", "SUCCESS");
+              }
+              failure {
+                setBuildStatus("test failed", "FAILURE");
+              }
+          }
         }
 
     }
