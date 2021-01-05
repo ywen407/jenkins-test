@@ -113,10 +113,10 @@ pipeline {
 
           post {
               success {
-                setBuildStatus("test succeeded", "SUCCESS");
+                setBuildStatus("build succeeded", "SUCCESS");
               }
               failure {
-                setBuildStatus("test failed", "FAILURE");
+                setBuildStatus("build failed", "FAILURE");
               }
           }
         }
