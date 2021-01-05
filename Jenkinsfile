@@ -47,7 +47,7 @@ pipeline {
             }
         }
 
-        stage('Test Backend') {
+        stage('Test and Coverage') {
           agent {
             docker {
               image 'node:latest'
@@ -59,7 +59,9 @@ pipeline {
             dir ('./'){
                 sh '''
                 npm install &&
-                npm run test
+                npm run test &&
+                npm run test:e2e &&
+                npm run test:cov
                 '''
             }
           }
