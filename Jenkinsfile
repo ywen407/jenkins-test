@@ -105,16 +105,18 @@ pipeline {
                 npm run build
                 """
             }
-          }
 
-          post {
+            post {
               success {
                 setBuildStatus("Build succeeded", "SUCCESS");
               }
               failure {
                 setBuildStatus("Build failed", "FAILURE");
               }
+            }
           }
+
+
         }
 
     }
