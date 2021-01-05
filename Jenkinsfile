@@ -22,6 +22,7 @@ pipeline {
             agent any
 
             steps {
+                setBuildStatus("processing","PENDING")
                 echo ' Cloning master Repository'
 
                 git url: 'https://github.com/ywen407/jenkins-test',
@@ -63,7 +64,7 @@ pipeline {
             post {
               failure {
                 setBuildStatus("test failed", "FAILURE");
-              }
+                }
             }
         }
 
